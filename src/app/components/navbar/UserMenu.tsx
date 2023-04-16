@@ -19,6 +19,14 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
   const toggleOpen = useCallback(() => {
     setIsOpen((value) => !value);
   }, []);
+
+  const onRent = useCallback(() => {
+    if (!currentUser) {
+      return loginModal.onOpen();
+    }
+
+    //open rent modal
+  }, [currentUser, loginModal]);
   return (
     <div
       className='
@@ -39,7 +47,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
         transition
         cursor-pointer
         '
-          onClick={() => console.log('clk')}
+          onClick={onRent}
         >
           Airbnb your home
         </div>

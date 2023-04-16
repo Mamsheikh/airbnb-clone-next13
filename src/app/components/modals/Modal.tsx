@@ -36,14 +36,14 @@ const Modal: React.FC<ModalsProps> = ({
     setShowModal(isOpen);
   }, [isOpen]);
 
-  const handleClose = useCallback(() => {
-    if (disabled) return;
+  // const handleClose = useCallback(() => {
+  //   if (disabled) return;
 
-    setShowModal(false);
-    setTimeout(() => {
-      onClose();
-    }, 300);
-  }, [disabled, onClose]);
+  //   setShowModal(false);
+  //   // setTimeout(() => {
+  //   //   onClose();
+  //   // }, 300);
+  // }, [disabled, onClose]);
 
   const handleSubmit = useCallback(() => {
     if (disabled) return;
@@ -79,12 +79,12 @@ const Modal: React.FC<ModalsProps> = ({
             <div className='flex min-h-full items-center justify-center p-4 text-center'>
               <Transition.Child
                 as={Fragment}
-                enter='ease-out duration-300'
-                enterFrom='opacity-0 scale-95'
-                enterTo='opacity-100 scale-100'
-                leave='ease-in duration-200'
-                leaveFrom='opacity-100 scale-100'
-                leaveTo='opacity-0 scale-95'
+                enter='transform transition ease-out duration-500 sm:duration-700'
+                enterFrom='translate-y-full'
+                enterTo='translate-y-0'
+                leave='transform transition ease-in duration-500 sm:duration-700'
+                leaveFrom='translate-y-0'
+                leaveTo='translate-y-full'
               >
                 <Dialog.Panel className='w-full max-w-md transform overflow-hidden rounded-lg bg-white  text-left align-middle shadow-xl transition-all'>
                   <Dialog.Title
@@ -104,7 +104,7 @@ const Modal: React.FC<ModalsProps> = ({
                   '
                     >
                       <button
-                        onClick={handleClose}
+                        onClick={onClose}
                         className='
                     p-1
                     border-0
