@@ -99,6 +99,16 @@ export const categories = [
 ];
 
 const Categories = () => {
+  const params = useSearchParams();
+  const pathname = usePathname();
+
+  const category = params?.get('category');
+
+  const isMainPage = pathname === '/';
+
+  if (!isMainPage) {
+    return null;
+  }
   return (
     <Container>
       <div className='pt-4 flex flex-row items-center justify-between overflow-x-auto'>
@@ -107,7 +117,7 @@ const Categories = () => {
             key={item.label}
             label={item.label}
             icon={item.icon}
-            description={item.description}
+            selected={category === item.label}
           />
         ))}
       </div>
