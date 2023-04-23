@@ -9,16 +9,17 @@ import { SafeUser } from '../types';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 
 type SliderProps = {
-  images: string[];
+  images: string[] | string;
   id: string;
   currentUser?: SafeUser | null;
 };
 
 const Slider: React.FC<SliderProps> = ({ id, images, currentUser }) => {
-  const router = useRouter();
+  const imageArray = Array.isArray(images) ? images : [images];
+
   return (
     <Carousel infiniteLoop autoPlay showArrows showThumbs showStatus={false}>
-      {images.map((img, i) => (
+      {imageArray.map((img, i) => (
         <div
           key={i}
           className='aspect-square w-full relative overflow-hidden rounded-xl'
