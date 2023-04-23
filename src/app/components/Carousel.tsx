@@ -16,7 +16,7 @@ type SliderProps = {
 
 const Slider: React.FC<SliderProps> = ({ id, images, currentUser }) => {
   const imageArray = Array.isArray(images) ? images : [images];
-
+  console.log(imageArray);
   return (
     <Carousel infiniteLoop autoPlay showArrows showThumbs showStatus={false}>
       {imageArray.map((img, i) => (

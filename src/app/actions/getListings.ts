@@ -9,6 +9,6 @@ export default async function getListings() {
 
     return listings;
   } catch (error: any) {
-    throw new error(error);
+    throw new Error(error);
   }
 }
