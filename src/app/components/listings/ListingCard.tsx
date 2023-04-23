@@ -68,7 +68,11 @@ const ListingCard: React.FC<ListingCardProps> = ({
       onClick={() => router.push(`/listings/${data.id}`)}
     >
       <div className='flex flex-col w-full gap-2'>
-        <Slider id={data.id} images={data.imageSrc} currentUser={currentUser} />
+        <Slider
+          id={data.id}
+          images={[data.imageSrc].flat()}
+          currentUser={currentUser}
+        />
         <div className='font-semibold text-lg'>
           {location?.region}, {location?.label}
         </div>
