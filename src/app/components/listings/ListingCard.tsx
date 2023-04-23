@@ -1,15 +1,12 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
 import { Listing, Reservation } from '@prisma/client';
+import { useRouter } from 'next/navigation';
 
-import { SafeUser } from '@/app/types';
 import useContries from '@/app/hooks/useCountries';
-import { useCallback, useMemo } from 'react';
+import { SafeUser } from '@/app/types';
 import { format } from 'date-fns';
-import Image from 'next/image';
-import HeartButton from '../HeartButton';
-import Carousel from '../Carousel';
+import { useCallback, useMemo } from 'react';
 import Button from '../Button';
 import Slider from '../Carousel';
 
