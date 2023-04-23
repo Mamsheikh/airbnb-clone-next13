@@ -9,7 +9,7 @@ import { SafeUser } from '../types';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 
 type SliderProps = {
-  images: string[] | string;
+  images: string[];
   id: string;
   currentUser?: SafeUser | null;
 };
