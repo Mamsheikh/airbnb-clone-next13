@@ -32,6 +32,7 @@ const ListingCard: React.FC<ListingCardProps> = ({
   actionLabel,
 }) => {
   const router = useRouter();
+
   const { getByValue } = useContries();
 
   const location = getByValue(data.locationValue);
@@ -71,7 +72,7 @@ const ListingCard: React.FC<ListingCardProps> = ({
       <div className='flex flex-col w-full gap-2'>
         <Carousel
           id={data.id}
-          images={data.imageSrc}
+          images={data.imageSrc as string[]}
           currentUser={currentUser}
         />
         <div className='font-semibold text-lg'>

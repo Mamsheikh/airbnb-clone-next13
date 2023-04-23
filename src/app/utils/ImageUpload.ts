@@ -9,7 +9,7 @@ export const imagesUpload = async (images: File[]) => {
     // }
     formData.append('file', item);
 
-    formData.append('upload_preset', 'prismagram');
+    formData.append('upload_preset', 'airbnb');
     formData.append('cloud_name', 'mamsheikh');
 
     const res = await fetch(
