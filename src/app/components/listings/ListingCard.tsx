@@ -72,7 +72,7 @@ const ListingCard: React.FC<ListingCardProps> = ({
       <div className='flex flex-col w-full gap-2'>
         <Carousel
           id={data.id}
-          images={data.imageSrc as string[]}
+          images={data.imageSrc}
           currentUser={currentUser}
         />
         <div className='font-semibold text-lg'>
