@@ -11,6 +11,7 @@ import Image from 'next/image';
 import HeartButton from '../HeartButton';
 import Carousel from '../Carousel';
 import Button from '../Button';
+import Slider from '../Carousel';
 
 type ListingCardProps = {
   data: Listing;
@@ -70,11 +71,7 @@ const ListingCard: React.FC<ListingCardProps> = ({
       onClick={() => router.push(`/listings/${data.id}`)}
     >
       <div className='flex flex-col w-full gap-2'>
-        <Carousel
-          id={data.id}
-          images={data.imageSrc}
-          currentUser={currentUser}
-        />
+        <Slider id={data.id} images={data.imageSrc} currentUser={currentUser} />
         <div className='font-semibold text-lg'>
           {location?.region}, {location?.label}
         </div>
