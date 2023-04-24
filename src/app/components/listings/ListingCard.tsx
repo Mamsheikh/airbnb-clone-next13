@@ -37,6 +37,10 @@ const ListingCard: React.FC<ListingCardProps> = ({
 }) => {
   const router = useRouter();
 
+  const imagesArray = Array.isArray(data.imageSrc)
+    ? data.imageSrc
+    : [data.imageSrc];
+
   const { getByValue } = useContries();
 
   const location = getByValue(data.locationValue);
@@ -85,10 +89,10 @@ const ListingCard: React.FC<ListingCardProps> = ({
           infiniteLoop
           autoPlay
           showArrows
-          showThumbs
+          showThumbs={false}
           showStatus={false}
         >
-          {data.imageSrc.map((img, i) => (
+          {imagesArray.map((img, i) => (
             <div
               key={i}
               className='aspect-square w-full relative overflow-hidden rounded-xl'
