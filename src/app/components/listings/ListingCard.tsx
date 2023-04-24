@@ -5,10 +5,16 @@ import { useRouter } from 'next/navigation';
 
 import useContries from '@/app/hooks/useCountries';
 import { SafeUser } from '@/app/types';
+
 import { format } from 'date-fns';
 import { useCallback, useMemo } from 'react';
+import { Carousel } from 'react-responsive-carousel';
+import Image from 'next/image';
 import Button from '../Button';
 import Slider from '../Carousel';
+import HeartButton from '../HeartButton';
+
+import 'react-responsive-carousel/lib/styles/carousel.min.css';
 
 type ListingCardProps = {
   data: Listing;
@@ -68,11 +74,37 @@ const ListingCard: React.FC<ListingCardProps> = ({
       onClick={() => router.push(`/listings/${data.id}`)}
     >
       <div className='flex flex-col w-full gap-2'>
-        <Slider
+        {/* <Slider
           id={data.id}
-          images={[data.imageSrc].flat()}
+          images={
+            Array.isArray(data.imageSrc) ? data.imageSrc : [data.imageSrc]
+          }
           currentUser={currentUser}
-        />
+        /> */}
+        <Carousel
+          infiniteLoop
+          autoPlay
+          showArrows
+          showThumbs
+          showStatus={false}
+        >
+          {data.imageSrc.map((img, i) => (
+            <div
+              key={i}
+              className='aspect-square w-full relative overflow-hidden rounded-xl'
+            >
+              <Image
+                fill
+                alt='Listing'
+                src={img}
+                className='object-cover h-full w-full group-hover:scale-110 transition'
+              />
+              <div className='absolute top-3 right-3'>
+                <HeartButton listingId={data.id} currentUser={currentUser} />
+              </div>
+            </div>
+          ))}
+        </Carousel>
         <div className='font-semibold text-lg'>
           {location?.region}, {location?.label}
         </div>
