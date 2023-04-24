@@ -1,13 +1,13 @@
 'use client';
 
-import { Listing, Reservation } from '@prisma/client';
+import { Reservation } from '@prisma/client';
 import { useRouter } from 'next/navigation';
 
 import useContries from '@/app/hooks/useCountries';
 import { SafeUser } from '@/app/types';
 
 import { format } from 'date-fns';
-import { useCallback, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Carousel } from 'react-responsive-carousel';
 import Image from 'next/image';
 import Button from '../Button';
@@ -15,6 +15,22 @@ import Slider from '../Carousel';
 import HeartButton from '../HeartButton';
 
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
+
+export type Listing = {
+  id: string;
+  title: string;
+  description: string;
+  imageSrc: string | string[];
+  category: string;
+  roomCount: number;
+  bathroomCount: number;
+  guestCount: number;
+  locationValue: string;
+  price: number;
+  userId: string;
+  createdAt: Date;
+  updatedAt: Date;
+};
 
 type ListingCardProps = {
   data: Listing;
@@ -72,6 +88,16 @@ const ListingCard: React.FC<ListingCardProps> = ({
 
     return `${format(start, 'PP')} - ${format(end, 'PP')}`;
   }, [reservation]);
+
+  const [imageList, setImageList] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (typeof data.imageSrc === 'string') {
+      setImageList([data.imageSrc]);
+    } else {
+      setImageList(data.imageSrc);
+    }
+  }, [data.imageSrc]);
   return (
     <div
       className='col-span-1 cursor-pointer group'
