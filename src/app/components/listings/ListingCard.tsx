@@ -1,24 +1,20 @@
 'use client';
 
-import { Reservation, Listing, Image, Prisma } from '@prisma/client';
+import { Reservation } from '@prisma/client';
 
 import useContries from '@/app/hooks/useCountries';
-import { SafeUser } from '@/app/types';
+import { SafeListing, SafeUser } from '@/app/types';
 
 import { format } from 'date-fns';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useMemo } from 'react';
 
 import Button from '../Button';
 import Slider from '../Carousel';
 
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 
-type ListingWithImages = Prisma.ListingGetPayload<{
-  include: { images: true | Prisma.ImageFindManyArgs };
-}>;
-
 type ListingCardProps = {
-  data: ListingWithImages;
+  data: SafeListing;
   reservation?: Reservation;
   currentUser?: SafeUser | null;
   onAction?: (id: string) => void;
