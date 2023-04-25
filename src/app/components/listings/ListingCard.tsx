@@ -1,18 +1,15 @@
 'use client';
 
 import { Reservation, Listing, Image, Prisma } from '@prisma/client';
-import { useRouter } from 'next/navigation';
 
 import useContries from '@/app/hooks/useCountries';
 import { SafeUser } from '@/app/types';
 
 import { format } from 'date-fns';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { Carousel } from 'react-responsive-carousel';
-// import Image from 'next/image';
+
 import Button from '../Button';
 import Slider from '../Carousel';
-import HeartButton from '../HeartButton';
 
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 
@@ -39,8 +36,6 @@ const ListingCard: React.FC<ListingCardProps> = ({
   onAction,
   actionLabel,
 }) => {
-  const router = useRouter();
-
   const imagesArray = data.images.map((i) => i.src);
 
   const { getByValue } = useContries();
@@ -75,43 +70,11 @@ const ListingCard: React.FC<ListingCardProps> = ({
     return `${format(start, 'PP')} - ${format(end, 'PP')}`;
   }, [reservation]);
 
-  // const [imageList, setImageList] = useState<string[]>([]);
-
-  // useEffect(() => {
-  //   if (typeof data.imageSrc === 'string') {
-  //     setImageList([data.imageSrc]);
-  //   } else {
-  //     setImageList(data.imageSrc);
-  //   }
-  // }, [data.imageSrc]);
   return (
     <div className='col-span-1 cursor-pointer group'>
       <div className='flex flex-col w-full gap-2'>
         <Slider id={data.id} images={imagesArray} currentUser={currentUser} />
-        {/* <Carousel
-          infiniteLoop
-          autoPlay
-          showArrows
-          showThumbs={false}
-          showStatus={false}
-        >
-          {data..map((img, i) => (
-            <div
-              key={i}
-              className='aspect-square w-full relative overflow-hidden rounded-xl'
-            >
-              <Image
-                fill
-                alt='Listing'
-                src={img}
-                className='object-cover h-full w-full group-hover:scale-110 transition'
-              />
-              <div className='absolute top-3 right-3'>
-                <HeartButton listingId={data.id} currentUser={currentUser} />
-              </div>
-            </div>
-          ))}
-        </Carousel> */}
+
         <div className='font-semibold text-lg'>
           {location?.region}, {location?.label}
         </div>
