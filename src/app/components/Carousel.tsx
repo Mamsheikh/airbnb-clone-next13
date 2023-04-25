@@ -15,12 +15,13 @@ type SliderProps = {
 };
 
 const Slider: React.FC<SliderProps> = ({ id, images, currentUser }) => {
-  //   console.log(images);
+  const router = useRouter();
   return (
     <Carousel infiniteLoop autoPlay showArrows showThumbs showStatus={false}>
       {images.map((img, i) => (
         <div
           key={i}
+          onClick={() => router.push(`/listings/${id}`)}
           className='aspect-square w-full relative overflow-hidden rounded-xl'
         >
           <Image

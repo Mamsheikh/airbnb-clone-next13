@@ -6,6 +6,9 @@ export default async function getListings() {
       orderBy: {
         createdAt: 'desc',
       },
+      include: {
+        images: true,
+      },
     });
     // console.log({ listings });
     return listings;

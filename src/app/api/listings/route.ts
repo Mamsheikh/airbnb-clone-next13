@@ -13,7 +13,7 @@ export async function POST(request: Request) {
   const {
     title,
     description,
-    imageSrc,
+    images,
     category,
     roomCount,
     guestCount,
@@ -26,7 +26,6 @@ export async function POST(request: Request) {
     data: {
       title,
       description,
-      imageSrc,
       category,
       roomCount,
       guestCount,
@@ -34,6 +33,11 @@ export async function POST(request: Request) {
       price: parseInt(price, 10),
       locationValue: location.value,
       userId: currentUser.id,
+      images: {
+        createMany: {
+          data: images,
+        },
+      },
     },
   });
 

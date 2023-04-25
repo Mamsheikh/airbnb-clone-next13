@@ -18,7 +18,7 @@ import axios from 'axios';
 import router from 'next/router';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
-import { imagesUpload } from '@/app/utils/ImageUpload';
+import { ImgType, imagesUpload } from '@/app/utils/ImageUpload';
 
 enum STEPS {
   CATEGORY = 0,
@@ -52,7 +52,7 @@ const RentModal: React.FC = () => {
       guestCount: 1,
       bathroomCount: 1,
       roomCount: 1,
-      imageSrc: [],
+      images: [],
       price: 1,
       title: '',
       description: '',
@@ -98,7 +98,7 @@ const RentModal: React.FC = () => {
 
     setLoading(true);
 
-    let media: string[] = [];
+    let media: ImgType[] = [];
     // setUploading(true);
     if (images.length > 0) {
       media = await imagesUpload(images);
@@ -107,7 +107,7 @@ const RentModal: React.FC = () => {
     axios
       .post('/api/listings', {
         ...data,
-        imageSrc: media,
+        images: media,
       })
       .then(() => {
         toast.success('Listing created!');

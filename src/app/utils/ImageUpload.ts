@@ -1,5 +1,9 @@
+export interface ImgType {
+  src: string;
+}
+
 export const imagesUpload = async (images: File[]) => {
-  let imgArr: string[] = [];
+  let imgArr: ImgType[] = [];
   for (const item of images) {
     const formData = new FormData();
 
@@ -21,7 +25,7 @@ export const imagesUpload = async (images: File[]) => {
     );
 
     const data = await res.json();
-    imgArr.push(data.secure_url);
+    imgArr.push({ src: data.secure_url });
   }
   return imgArr;
 };
