@@ -7,6 +7,7 @@ import Image from 'next/image';
 import useContries from '@/app/hooks/useCountries';
 import { SafeUser } from '@/app/types';
 import Heading from '../Heading';
+import HeartButton from '../HeartButton';
 
 type ListingHeaderProps = {
   title: string;
@@ -45,6 +46,9 @@ const ListingHeader: React.FC<ListingHeaderProps> = ({
         title={title}
         subtitle={`${location?.region}, ${location?.label}`}
       />
+      <div className='flex justify-end items-center'>
+        <HeartButton listingId={id} currentUser={currentUser} />
+      </div>
       {isViewerOpen && (
         <ImageViewer
           src={images.map((i) => i.src)}
@@ -57,9 +61,11 @@ const ListingHeader: React.FC<ListingHeaderProps> = ({
       )}
       <div
         onClick={() => openImageViewer(0)}
-        className={`w-full h-[60vh] overflow-hidden rounded-xl relative cursor-pointer ${
+        className={`w-full h-[60vh] hidden md:block  overflow-hidden rounded-xl relative cursor-pointer ${
           images.length === 1 && 'grid-cols-1 grid  gap-2'
-        } ${images.length <= 4 && 'grid grid-cols-2 gap-2'} `}
+        } ${
+          images.length <= 4 && images.length !== 1 && 'grid grid-cols-2 gap-2'
+        } `}
       >
         {images.length <= 4 &&
           images.map((image, index) => (
@@ -124,6 +130,18 @@ const ListingHeader: React.FC<ListingHeaderProps> = ({
             </div>
           </div>
         )}
+      </div>
+      <div
+        onClick={() => openImageViewer(0)}
+        className={`w-full h-[60vh]  md:hidden  overflow-hidden rounded-xl relative cursor-pointer `}
+      >
+        <Image
+          src={images[0].src}
+          alt={`Image `}
+          fill
+          className='object-cover w-full'
+          onClick={() => openImageViewer(0)}
+        />
       </div>
     </>
   );
