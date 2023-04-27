@@ -32,6 +32,7 @@ specifiers:
   react-leaflet: ^4.2.1
   react-responsive-carousel: ^3.2.23
   react-select: ^5.7.2
+  react-simple-image-viewer: ^1.2.2
   tailwindcss: 3.3.1
   twemoji: ^14.0.2
   typescript: 5.0.4
@@ -67,6 +68,7 @@ dependencies:
   react-leaflet: 4.2.1_yydtlhsdonbqao6vgvkwhv2zki
   react-responsive-carousel: 3.2.23
   react-select: 5.7.2_zn3vyfk3tbnwebg5ldvieekjaq
+  react-simple-image-viewer: 1.2.2_biqbaboplfbrettd7655fr4n2y
   tailwindcss: 3.3.1_postcss@8.4.21
   twemoji: 14.0.2
   typescript: 5.0.4
@@ -2905,6 +2907,16 @@ packages:
       use-isomorphic-layout-effect: 1.1.2_pofolu2o2erjq4lhyzl3hqovzq
     transitivePeerDependencies:
       - '@types/react'
+    dev: false
+
+  /react-simple-image-viewer/1.2.2_biqbaboplfbrettd7655fr4n2y:
+    resolution: {integrity: sha512-Vk9p6Glm7uE4cSEBGkqZPGC3qoZcAwd48nq5/JN13NKd9rUrUIWZWFEmRzO+FVwl6c0UdjSDkthGoaoiYeWVjg==}
+    peerDependencies:
+      react: ^18.1.0
+      react-dom: ^18.1.0
+    dependencies:
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
     dev: false
 
   /react-transition-group/4.4.5_biqbaboplfbrettd7655fr4n2y:
