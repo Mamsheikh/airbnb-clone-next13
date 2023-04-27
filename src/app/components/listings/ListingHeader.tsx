@@ -58,8 +58,8 @@ const ListingHeader: React.FC<ListingHeaderProps> = ({
       <div
         onClick={() => openImageViewer(0)}
         className={`w-full h-[60vh] overflow-hidden rounded-xl relative cursor-pointer ${
-          images.length === 1 ? 'grid-cols-1' : 'grid-cols-2'
-        } grid  gap-2`}
+          images.length === 1 && 'grid-cols-1 grid  gap-2'
+        } ${images.length <= 4 && 'grid grid-cols-2 gap-2'} `}
       >
         {images.length <= 4 &&
           images.map((image, index) => (
@@ -116,7 +116,7 @@ const ListingHeader: React.FC<ListingHeaderProps> = ({
                     fill
                     className='object-cover w-full'
                   />
-                  <button className='absolute bottom-0 right-0 bg-white text-gray-800 px-2 py-1 rounded-md shadow-md hover:shadow-lg transition duration-300'>
+                  <button className='absolute bottom-0 right-0 mb-2 bg-white text-gray-800 px-2 py-1 rounded-md shadow-md hover:shadow-lg transition duration-300'>
                     Show all photos
                   </button>
                 </div>
