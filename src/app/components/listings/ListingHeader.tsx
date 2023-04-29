@@ -7,7 +7,6 @@ import Image from 'next/image';
 import useContries from '@/app/hooks/useCountries';
 import { SafeUser } from '@/app/types';
 import Heading from '../Heading';
-import HeartButton from '../HeartButton';
 
 type ListingHeaderProps = {
   title: string;
@@ -46,9 +45,6 @@ const ListingHeader: React.FC<ListingHeaderProps> = ({
         title={title}
         subtitle={`${location?.region}, ${location?.label}`}
       />
-      <div className='flex justify-end items-center'>
-        <HeartButton listingId={id} currentUser={currentUser} />
-      </div>
       {isViewerOpen && (
         <ImageViewer
           src={images.map((i) => i.src)}
@@ -61,24 +57,32 @@ const ListingHeader: React.FC<ListingHeaderProps> = ({
       )}
       <div
         onClick={() => openImageViewer(0)}
-        className={`w-full h-[60vh] hidden md:block  overflow-hidden rounded-xl relative cursor-pointer ${
-          images.length === 1 && 'grid-cols-1 grid  gap-2'
-        } ${
-          images.length <= 4 && images.length !== 1 && 'grid grid-cols-2 gap-2'
-        } `}
+        className={`w-full h-[60vh] overflow-hidden  hidden md:block  rounded-xl relative cursor-pointer ${
+          images.length === 1 || images.length >= 5
+            ? 'grid-cols-1'
+            : 'grid-cols-2'
+        } grid  gap-2`}
       >
-        {images.length <= 4 &&
-          images.map((image, index) => (
-            <div key={index} className='relative'>
-              <Image
-                src={image.src}
-                alt={`Image ${index + 1}`}
-                fill
-                className='object-cover w-full'
-                onClick={() => openImageViewer(index)}
-              />
-            </div>
-          ))}
+        {images.length <= 4 && (
+          <div
+            className={`grid ${
+              images.length === 1 ? 'grid-cols-1' : 'grid-cols-2'
+            }  gap-2 h-full`}
+          >
+            {images.length <= 4 &&
+              images.map((image, index) => (
+                <div key={index} className='relative'>
+                  <Image
+                    src={image.src}
+                    alt={`Image ${index + 1}`}
+                    fill
+                    className='object-cover w-full h-full'
+                    onClick={() => openImageViewer(index)}
+                  />
+                </div>
+              ))}
+          </div>
+        )}
         {images.length >= 5 && (
           <div className='grid grid-cols-2 h-full gap-2'>
             <div className=' relative'>
@@ -122,7 +126,7 @@ const ListingHeader: React.FC<ListingHeaderProps> = ({
                     fill
                     className='object-cover w-full'
                   />
-                  <button className='absolute bottom-0 right-0 mb-2 bg-white text-gray-800 px-2 py-1 rounded-md shadow-md hover:shadow-lg transition duration-300 mr-3'>
+                  <button className='absolute mb-2 mr-3 bottom-0 right-0 bg-white text-gray-800 px-2 py-1 rounded-md shadow-md hover:shadow-lg transition duration-300'>
                     Show all photos
                   </button>
                 </div>
