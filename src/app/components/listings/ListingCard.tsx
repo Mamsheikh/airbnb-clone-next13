@@ -1,9 +1,7 @@
 'use client';
 
-import { Reservation } from '@prisma/client';
-
 import useContries from '@/app/hooks/useCountries';
-import { SafeListing, SafeUser } from '@/app/types';
+import { SafeListing, SafeReservation, SafeUser } from '@/app/types';
 
 import { format } from 'date-fns';
 import { useCallback, useMemo } from 'react';
@@ -15,7 +13,7 @@ import 'react-responsive-carousel/lib/styles/carousel.min.css';
 
 type ListingCardProps = {
   data: SafeListing;
-  reservation?: Reservation;
+  reservation?: SafeReservation;
   currentUser?: SafeUser | null;
   onAction?: (id: string) => void;
   disabled?: boolean;
