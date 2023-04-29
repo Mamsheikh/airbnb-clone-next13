@@ -1,4 +1,4 @@
-import { User, Prisma } from '@prisma/client';
+import { User, Prisma, Reservation } from '@prisma/client';
 
 export type SafeUser = Omit<
   User,
@@ -16,4 +16,14 @@ type ListingWithImages = Prisma.ListingGetPayload<{
 export type SafeListing = Omit<ListingWithImages, 'createdAt' | 'updatedAt'> & {
   createdAt: string;
   updatedAt: string;
+};
+
+export type SafeReservation = Omit<
+  Reservation,
+  'createdAt' | 'startDate' | 'endDate' | 'listing'
+> & {
+  createdAt: string;
+  startDate: string;
+  endDate: string;
+  listing: SafeListing;
 };

@@ -2,7 +2,6 @@
 
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
-import { Reservation } from '@prisma/client';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { differenceInCalendarDays, eachDayOfInterval } from 'date-fns';
@@ -14,7 +13,7 @@ import ListingInfo from '@/app/components/listings/ListingInfo';
 import ListingReservation from '@/app/components/listings/ListingReservation';
 import { categories } from '@/app/components/navbar/Categories';
 
-import { SafeListing, SafeUser } from '@/app/types';
+import { SafeListing, SafeUser, SafeReservation } from '@/app/types';
 
 import useLoginModal from '@/app/hooks/useLoginModal';
 
@@ -29,7 +28,7 @@ type ListingClientProps = {
     user: SafeUser;
   };
   currentUser?: SafeUser | null;
-  reservations?: Reservation[];
+  reservations?: SafeReservation[];
 };
 
 const ListingClient: React.FC<ListingClientProps> = ({

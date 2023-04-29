@@ -122,7 +122,7 @@ const ListingHeader: React.FC<ListingHeaderProps> = ({
                     fill
                     className='object-cover w-full'
                   />
-                  <button className='absolute bottom-0 right-0 mb-2 bg-white text-gray-800 px-2 py-1 rounded-md shadow-md hover:shadow-lg transition duration-300'>
+                  <button className='absolute bottom-0 right-0 mb-2 bg-white text-gray-800 px-2 py-1 rounded-md shadow-md hover:shadow-lg transition duration-300 mr-3'>
                     Show all photos
                   </button>
                 </div>
