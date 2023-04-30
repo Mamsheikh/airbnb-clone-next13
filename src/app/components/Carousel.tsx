@@ -17,7 +17,15 @@ type SliderProps = {
 const Slider: React.FC<SliderProps> = ({ id, images, currentUser }) => {
   const router = useRouter();
   return (
-    <Carousel infiniteLoop autoPlay showArrows showThumbs showStatus={false}>
+    <Carousel
+      infiniteLoop
+      autoPlay
+      showArrows
+      showThumbs
+      showStatus={false}
+      stopOnHover
+      swipeable
+    >
       {images.map((img, i) => (
         <div
           key={i}
