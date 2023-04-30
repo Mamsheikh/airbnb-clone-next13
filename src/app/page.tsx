@@ -1,38 +1,28 @@
-import getCurrentUser from './actions/getCurrentUser';
-import getListings, { IListingParams } from './actions/getListings';
-import Container from './components/Container';
-import EmptyState from './components/EmptyState';
-import ListingCard from './components/listings/ListingCard';
+import EmptyState from '@/app/components/EmptyState';
 
-interface IHomeProps {
-  searchParams: IListingParams;
-}
+import getCurrentUser from '@/app/actions/getCurrentUser';
+import getListings from '@/app/actions/getListings';
+import PropertiesClient from './properties/PropertiesClient';
 
-export const dynamic = 'force-dynamic';
-
-const Home = async ({ searchParams }: IHomeProps) => {
-  const listings = await getListings(searchParams);
+const PropertiesPage = async () => {
   const currentUser = await getCurrentUser();
 
-  if (listings.length === 0) {
-    return <EmptyState showReset />;
+  if (!currentUser) {
+    return <EmptyState title='Unauthorized' subtitle='Please login' />;
   }
 
-  return (
-    <Container>
-      <div className='pt-20 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-8'>
-        {/* <div> */}
-        {listings.map((listing) => (
-          <ListingCard
-            key={listing.id}
-            data={listing}
-            currentUser={currentUser}
-          />
-        ))}
-        {/* </div> */}
-      </div>
-    </Container>
-  );
+  const listings = await getListings({ userId: currentUser.id });
+
+  if (listings.length === 0) {
+    return (
+      <EmptyState
+        title='No properties found'
+        subtitle='Looks like you have no properties.'
+      />
+    );
+  }
+
+  return <PropertiesClient listings={listings} currentUser={currentUser} />;
 };
 
-export default Home;
+export default PropertiesPage;

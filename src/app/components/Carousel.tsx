@@ -21,7 +21,7 @@ const Slider: React.FC<SliderProps> = ({ id, images, currentUser }) => {
       infiniteLoop
       autoPlay
       showArrows
-      showThumbs
+      showThumbs={false}
       showStatus={false}
       stopOnHover
       swipeable
