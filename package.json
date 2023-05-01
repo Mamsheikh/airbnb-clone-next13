@@ -39,6 +39,7 @@
     "react-responsive-carousel": "^3.2.23",
     "react-select": "^5.7.2",
     "react-simple-image-viewer": "^1.2.2",
+    "react-spinners": "^0.13.8",
     "tailwindcss": "3.3.1",
     "twemoji": "^14.0.2",
     "typescript": "5.0.4",
