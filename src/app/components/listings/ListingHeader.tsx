@@ -7,6 +7,7 @@ import Image from 'next/image';
 import useContries from '@/app/hooks/useCountries';
 import { SafeUser } from '@/app/types';
 import Heading from '../Heading';
+import HeartButton from '../HeartButton';
 
 type ListingHeaderProps = {
   title: string;
@@ -45,6 +46,9 @@ const ListingHeader: React.FC<ListingHeaderProps> = ({
         title={title}
         subtitle={`${location?.region}, ${location?.label}`}
       />
+      <div className='flex justify-end items-center'>
+        <HeartButton listingId={id} currentUser={currentUser} />
+      </div>
       {isViewerOpen && (
         <ImageViewer
           src={images.map((i) => i.src)}
