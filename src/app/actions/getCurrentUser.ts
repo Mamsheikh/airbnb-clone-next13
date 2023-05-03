@@ -25,6 +25,8 @@ export default async function getCurrentUser() {
 
     return {
       ...currentUser,
+      hasWallet: currentUser.walletId ? true : false,
+      walletId: undefined,
       createdAt: currentUser.createdAt.toISOString(),
       updatedAt: currentUser.updatedAt.toISOString(),
       emailVerified: currentUser.emailVerified?.toISOString() || null,

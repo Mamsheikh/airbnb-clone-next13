@@ -2,7 +2,7 @@ import { User, Prisma, Reservation } from '@prisma/client';
 
 export type SafeUser = Omit<
   User,
-  'createdAt' | 'updatedAt' | 'emailVerified'
+  'createdAt' | 'updatedAt' | 'emailVerified' | 'walletId'
 > & {
   createdAt: string;
   updatedAt: string;
