@@ -1,25 +1,64 @@
 import stripe from "stripe";
+import { SafeUser } from "../types";
 
 const client = new stripe(`${process.env.STRIPE_SECRET_KEY}`, {
     apiVersion: "2022-11-15",
 });
 
 export const Stripe = {
-    connect: async (code: string) => {
-        const response = await client.oauth.token({
-            grant_type: "authorization_code",
-            code,
+    connect: async (currentUser: SafeUser) => {
+        // const response = await client.oauth.token({
+        //     grant_type: "authorization_code",
+        //     code,
+        // });
+
+        const nameArray = currentUser.name!.split(" ");
+        const first_name = nameArray[0];
+        const last_name = nameArray.length > 1 ? nameArray.slice(1).join(" ") : "";
+        const url = `https://www.${currentUser.name!.replace(" ", "")}.com`.toLocaleLowerCase();
+
+        const accountParams = await client.accounts.create({
+            type: 'express',
+            email: currentUser.email!,
+            business_type: 'individual',
+            country: undefined,
+
+            business_profile: {
+                url,
+
+            },
+            individual: {
+                first_name,
+                last_name,
+                email: currentUser.email!,
+
+
+            }
+        })
+
+        const accountId = accountParams.id
+        // Create an account link for the user's Stripe account
+        const accountLink = await client.accountLinks.create({
+            account: accountId,
+            refresh_url: 'http://localhost:3000/user',
+            return_url: 'http://localhost:3000/user',
+            type: 'account_onboarding'
+        });
+        accountLink.url
+        return { accountId, accountLink };
+    },
+    balance: async (stripeAccount: string,) => {
+        const balance = await client.balance.retrieve({
+            stripeAccount
         });
 
-        return response;
+        return balance.available[0].amount
+
     },
     disconnect: async (stripeUserId: string) => {
-        const response = await client.oauth.deauthorize({
-            client_id: `${process.env.S_CLIENT_ID}`,
-            stripe_user_id: stripeUserId,
-        });
+        const response = await client.accounts.del(stripeUserId)
 
-        return response;
+        return response
     },
     charge: async (amount: number, source: string, stripeAccount: string) => {
         try {

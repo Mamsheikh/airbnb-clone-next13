@@ -6,10 +6,9 @@ import { Stripe } from "@/app/libs/stripe";
 
 export async function POST(request: Request) {
     try {
-        const body = await request.json();
+        // const body = await request.json();
 
-        const { code } = body;
-        console.log(code)
+        // const { code } = body;
 
         const currentUser = await getCurrentUser();
 
@@ -17,9 +16,9 @@ export async function POST(request: Request) {
             return NextResponse.error()
         }
 
-        const wallet = await Stripe.connect(code)
+        const { accountId, accountLink } = await Stripe.connect(currentUser)
 
-        if (!wallet) {
+        if (!accountId) {
             throw new Error("stripe grant error");
         }
 
@@ -28,10 +27,45 @@ export async function POST(request: Request) {
                 id: currentUser.id
             },
             data: {
-                walletId: wallet.stripe_user_id
+                walletId: accountId
             }
         })
 
+        return NextResponse.json(accountLink.url)
+    } catch (error: any) {
+        throw new Error(error)
+    }
+
+
+}
+
+export async function PATCH(request: Request) {
+    try {
+
+
+        const currentUser = await getCurrentUser();
+
+        if (!currentUser) {
+            return NextResponse.error()
+        }
+
+        if (currentUser.walletId) {
+            const wallet = await Stripe.disconnect(currentUser.walletId)
+
+            if (!wallet) {
+                throw new Error('Stripe disconnect error')
+            }
+
+        }
+
+        const user = await prisma.user.update({
+            where: {
+                id: currentUser.id
+            },
+            data: {
+                walletId: null
+            }
+        })
         return NextResponse.json(user)
     } catch (error: any) {
         throw new Error(error)

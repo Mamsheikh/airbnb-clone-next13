@@ -7,6 +7,8 @@ export type SafeUser = Omit<
   createdAt: string;
   updatedAt: string;
   emailVerified: string | null;
+  hasWallet: boolean
+  balance: number;
 };
 
 type ListingWithImages = Prisma.ListingGetPayload<{
