@@ -37,11 +37,14 @@ export const Stripe = {
         })
 
         const accountId = accountParams.id
+        const isProd = process.env.NODE_ENV === 'production';
+        const refresh_url = isProd ? 'https://groundbnb.vercel.app' : 'http://localhost:3000/user';
+        const return_url = isProd ? 'https://groundbnb.vercel.app' : 'http://localhost:3000/user';
         // Create an account link for the user's Stripe account
         const accountLink = await client.accountLinks.create({
             account: accountId,
-            refresh_url: 'http://localhost:3000/user',
-            return_url: 'http://localhost:3000/user',
+            refresh_url,
+            return_url,
             type: 'account_onboarding'
         });
         accountLink.url
