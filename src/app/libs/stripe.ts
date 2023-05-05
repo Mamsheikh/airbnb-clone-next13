@@ -15,7 +15,8 @@ export const Stripe = {
         const nameArray = currentUser.name!.split(" ");
         const first_name = nameArray[0];
         const last_name = nameArray.length > 1 ? nameArray.slice(1).join(" ") : "";
-        const url = `https://www.${currentUser.name!.replace(" ", "")}.com`.toLocaleLowerCase();
+        const url = `https://www.${currentUser.name!.replace(/\s+/g, "-").toLowerCase()}.com`;
+
 
         const accountParams = await client.accounts.create({
             type: 'express',
@@ -45,7 +46,7 @@ export const Stripe = {
             account: accountId,
             refresh_url,
             return_url,
-            type: 'account_onboarding'
+            type: 'account_onboarding',
         });
         accountLink.url
         return { accountId, accountLink };
