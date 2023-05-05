@@ -19,6 +19,7 @@ export default async function getListingById(params: IParams) {
     });
 
     if (!listing) return null;
+    const hasWallet = !!listing.user.walletId
 
     return {
       ...listing,
@@ -29,6 +30,8 @@ export default async function getListingById(params: IParams) {
         createdAt: listing.user.createdAt.toISOString(),
         updatedAt: listing.user.updatedAt.toISOString(),
         emailVerified: listing.user.emailVerified?.toISOString() || null,
+        balance: 0,
+        hasWallet
       },
     };
   } catch (error: any) {
