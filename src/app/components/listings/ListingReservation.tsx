@@ -3,26 +3,51 @@
 import { Range } from 'react-date-range';
 import Calendar from '../inputs/Calendar';
 import Button from '../Button';
+import BookingModal from '../modals/BookingModal';
+import useBookModal from '@/app/hooks/useBookModal';
+import { Dispatch, SetStateAction, useCallback } from 'react';
+import { SafeUser } from '@/app/types';
+import useLoginModal from '@/app/hooks/useLoginModal';
 
 type ListingReservationProps = {
   price: number;
   totalPrice: number;
   dateRange: Range;
+  setDateRange: Dispatch<SetStateAction<Range>>;
+  initialDateRange: {
+    startDate: Date;
+    endDate: Date;
+    key: string;
+  };
   onChangeDate: (value: Range) => void;
-  onSubmit: () => void;
+  currentUser?: SafeUser | null;
   disabled?: boolean;
   disabledDates: Date[];
+  listingId?: string;
 };
 
 const ListingReservation: React.FC<ListingReservationProps> = ({
   price,
   totalPrice,
   dateRange,
+  setDateRange,
+  initialDateRange,
   onChangeDate,
-  onSubmit,
+  currentUser,
   disabled,
   disabledDates,
+  listingId,
 }) => {
+  const bookingModal = useBookModal();
+  const loginModal = useLoginModal();
+
+  const onClickReservation = useCallback(() => {
+    if (!currentUser) {
+      return loginModal.onOpen();
+    }
+
+    bookingModal.onOpen();
+  }, [loginModal, bookingModal, currentUser]);
   return (
     <div className='bg-white rounded-xl border-[1px] border-neutral-200 overflow-hidden'>
       <div className='flex flex-row items-center gap-1 p-4'>
@@ -37,7 +62,18 @@ const ListingReservation: React.FC<ListingReservationProps> = ({
       />
       <hr />
       <div className='p-4'>
-        <Button label='Reserve' disabled={disabled} onClick={onSubmit} />
+        <Button
+          label='Reserve'
+          disabled={disabled}
+          onClick={onClickReservation}
+        />
+        <BookingModal
+          listingId={listingId!}
+          dateRange={dateRange}
+          totalPrice={totalPrice}
+          setDateRange={setDateRange}
+          initialDateRange={initialDateRange}
+        />
       </div>
       <div className='p-4 flex flex-row items-center justify-between font-semibold text-lg'>
         <div>Total</div>

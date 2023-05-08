@@ -2,7 +2,7 @@
 
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import toast from 'react-hot-toast';
 import Avatar from '../components/Avatar';
 import Button from '../components/Button';
@@ -43,6 +43,12 @@ const UserClient: React.FC<UserClientProps> = ({ currentUser }) => {
       });
   }, [router]);
 
+  // useEffect(() => {
+  //   axios.get('/api/stripe').then((response) => {
+  //     console.log(response.data);
+  //   });
+  // }, []);
+
   const stripeUrl = `https://dashboard.stripe.com/oauth/authorize?response_type=code&client_id=${process.env.NEXT_PUBLIC_STRIPE_OAUTH_CLIENT_ID}&scope=read_write&redirect_uri=http://localhost:3000/user`;
   const additionalDetails = currentUser?.hasWallet ? (
     <>
@@ -50,7 +56,7 @@ const UserClient: React.FC<UserClientProps> = ({ currentUser }) => {
       <div className='my-6 space-y-4 font-light'>
         <div>
           Income Earned:{' '}
-          <span className='font-semibold'>$ {currentUser.balance}</span>
+          <span className='font-semibold'>$ {currentUser.income}</span>
         </div>
         <Button label='Disconnect Stripe' onClick={onCancel} />
         <div className='text-xs text-neutral-500 '>

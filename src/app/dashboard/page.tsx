@@ -5,7 +5,7 @@ import getReservations from '../actions/getReservations';
 
 import UserClient from './UserClient';
 
-const UserPage = async () => {
+const DashboardPage = async () => {
   //   const router = useRouter();
   const currentUser = await getCurrentUser();
   if (!currentUser) {
@@ -25,4 +25,4 @@ const UserPage = async () => {
   return <UserClient currentUser={currentUser} />;
 };
 
-export default UserPage;
+export default DashboardPage;

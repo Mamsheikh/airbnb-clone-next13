@@ -6,6 +6,8 @@ import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { differenceInCalendarDays, eachDayOfInterval } from 'date-fns';
 import { Range } from 'react-date-range';
+import { Elements } from '@stripe/react-stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
 
 import Container from '@/app/components/Container';
 import ListingHeader from '@/app/components/listings/ListingHeader';
@@ -16,6 +18,7 @@ import { categories } from '@/app/components/navbar/Categories';
 import { SafeListing, SafeUser, SafeReservation } from '@/app/types';
 
 import useLoginModal from '@/app/hooks/useLoginModal';
+import useBookModal from '@/app/hooks/useBookModal';
 
 const initialDateRange = {
   startDate: new Date(),
@@ -37,7 +40,12 @@ const ListingClient: React.FC<ListingClientProps> = ({
   reservations = [],
 }) => {
   const loginModal = useLoginModal();
+  const bookingModal = useBookModal();
   const router = useRouter();
+
+  const stripePromise = loadStripe(
+    'pk_test_51N34RGGyKqr6VuiPkMPTW8siqXFPzl70d0PdUaw4mtINjzuw040KXXdpLZMZwzOEh71L8Tvc8GCev1X2vblEMKff00pXT14gtR',
+  );
 
   const disabledDates = useMemo(() => {
     let dates: Date[] = [];
@@ -58,38 +66,11 @@ const ListingClient: React.FC<ListingClientProps> = ({
   const [totalPrice, setTotalPrice] = useState(listing.price);
   const [dateRange, setDateRange] = useState<Range>(initialDateRange);
 
-  const onCreateReservation = useCallback(() => {
-    if (!currentUser) {
-      return loginModal.onOpen();
-    }
-
-    setIsLoading(true);
-    axios
-      .post(`/api/reservations`, {
-        totalPrice,
-        startDate: dateRange.startDate,
-        endDate: dateRange.endDate,
-        listingId: listing.id,
-      })
-      .then(() => {
-        toast.success('Listing Reserved🎉');
-        setDateRange(initialDateRange);
-
-        router.push('/trips');
-      })
-      .catch(() => {
-        toast.error('something went wrong😢');
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  }, [totalPrice, dateRange, listing.id, currentUser, loginModal, router]);
-
   useEffect(() => {
     if (dateRange.startDate && dateRange.endDate) {
       const dayCount = differenceInCalendarDays(
         dateRange.endDate,
-        dateRange.startDate
+        dateRange.startDate,
       );
 
       if (dayCount && listing.price) {
@@ -125,15 +106,20 @@ const ListingClient: React.FC<ListingClientProps> = ({
               locationValue={listing.locationValue}
             />
             <div className='order-first mb-10 md:order-last md:col-span-3'>
-              <ListingReservation
-                price={listing.price}
-                totalPrice={totalPrice}
-                onChangeDate={(value) => setDateRange(value)}
-                dateRange={dateRange}
-                onSubmit={onCreateReservation}
-                disabled={isLoading}
-                disabledDates={disabledDates}
-              />
+              <Elements stripe={stripePromise}>
+                <ListingReservation
+                  price={listing.price}
+                  totalPrice={totalPrice}
+                  onChangeDate={(value) => setDateRange(value)}
+                  dateRange={dateRange}
+                  setDateRange={setDateRange}
+                  initialDateRange={initialDateRange}
+                  disabled={isLoading}
+                  disabledDates={disabledDates}
+                  listingId={listing.id}
+                  currentUser={currentUser}
+                />
+              </Elements>
             </div>
           </div>
         </div>
