@@ -79,9 +79,9 @@ const BookingModal: React.FC<BookingModalProps> = ({
   };
 
   const onCreateReservation = useCallback(async () => {
-    // if (!stripe || !elements) {
-    //   return toast.error("Sorry! We weren't able to connect with Stripe");
-    // }
+    if (!stripe || !elements) {
+      return toast.error("Sorry! We weren't able to connect with Stripe");
+    }
 
     const cardElement = elements.getElement(CardElement);
 
@@ -116,10 +116,11 @@ const BookingModal: React.FC<BookingModalProps> = ({
     totalPrice,
     dateRange,
     listingId,
-    loginModal,
     router,
     initialDateRange,
     setDateRange,
+    elements,
+    stripe,
   ]);
 
   const bodyContent = (
