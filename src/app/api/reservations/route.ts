@@ -1,11 +1,14 @@
 import { NextResponse } from 'next/server';
+import { eachDayOfInterval, isWithinInterval } from 'date-fns';
+import { format } from 'date-fns';
 
 import getCurrentUser from '@/app/actions/getCurrentUser';
 import prisma from '@/app/libs/prismadb';
 import { Stripe } from '@/app/libs/stripe';
 
 export async function POST(request: Request) {
-  const currentUser = await getCurrentUser();
+  try {
+    const currentUser = await getCurrentUser();
 
   if (!currentUser) {
     return NextResponse.error();
@@ -22,6 +25,9 @@ export async function POST(request: Request) {
   const listing = await prisma.listing.findUnique({
     where: {
       id: listingId
+    },
+    include: {
+      reservations: true
     }
   })
   if (!listing) {
@@ -29,7 +35,7 @@ export async function POST(request: Request) {
   }
 
   if (listing.userId === currentUser.id) {
-    throw new Error("Host can book his own listing")
+    return NextResponse.json({message:`You can't book your own listing`},{status: 500});
   }
   const host = await prisma.user.findUnique({
     where: {
@@ -42,9 +48,19 @@ export async function POST(request: Request) {
   }
 
   if (!host.walletId) {
-    throw new Error("the host is not connected with Stripe");
+    return NextResponse.json({message:`The host is not connected with Stripe`},{status: 500});
   }
 
+// Check if the startDate and endDate are already reserved
+const dates = eachDayOfInterval({ start: new Date(startDate), end: new Date(endDate) });
+for (const reservation of listing.reservations) {
+  const reservationDates = eachDayOfInterval({ start: new Date(reservation.startDate), end: new Date(reservation.endDate) });
+  for (const date of dates) {
+    if (reservationDates.some(reservationDate => isWithinInterval(date, { start: reservationDate, end: reservationDate }))) {
+      return NextResponse.json({message:`The dates are already reserved`},{status: 500});
+    }
+  }
+}
   await Stripe.charge(totalPrice, source, host.walletId);
 
 
@@ -71,4 +87,7 @@ export async function POST(request: Request) {
   });
 
   return NextResponse.json(listingAndReservation);
+  } catch (error:any) {
+    throw new Error(error)
+  }
 }

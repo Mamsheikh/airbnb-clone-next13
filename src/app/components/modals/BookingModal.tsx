@@ -105,8 +105,10 @@ const BookingModal: React.FC<BookingModalProps> = ({
           router.push('/trips');
         })
 
-        .catch(() => {
-          toast.error('something went wrong😢');
+        .catch((error) => {
+          console.log(error);
+        
+          toast.error(error.response.data.message);
         })
         .finally(() => {
           // setIsLoading(false);
