@@ -4,6 +4,7 @@ import { Fragment, useCallback, useState } from 'react';
 import { AiOutlineMenu } from 'react-icons/ai';
 import { signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import { toast } from 'react-hot-toast';
 import { Menu, Transition } from '@headlessui/react';
 
 import Avatar from '../Avatar';
@@ -30,9 +31,14 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
       return loginModal.onOpen();
     }
 
+    if(!currentUser.hasWallet) {
+      toast.success("You need to connect stripe before hosting a listing")
+     return router.push('/dashboard')
+    }
+
     //open rent modal
     rentModal.onOpen();
-  }, [currentUser, loginModal, rentModal]);
+  }, [currentUser, loginModal, rentModal, router]);
   return (
     <div
       className='

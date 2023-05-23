@@ -120,7 +120,7 @@ export const Stripe = {
                 currency: 'usd',
                 payment_method: paymentMethod.id,
                 payment_method_types: ['card'],
-                application_fee_amount: Math.round(amount * 0.5), // 5% platform fee
+                application_fee_amount: Math.round(amount * 0.05), // 5% platform fee
                 transfer_data: {
                     destination: stripeAccount,
                 },

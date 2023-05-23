@@ -15,11 +15,13 @@ import { signIn } from 'next-auth/react';
 import useLoginModal from '@/app/hooks/useLoginModal';
 import useBookModal from '@/app/hooks/useBookModal';
 import { useRouter } from 'next/navigation';
+import { format } from 'date-fns';
 
 type BookingModalProps = {
   totalPrice: number;
   dateRange: Range;
   listingId: string;
+  listingPrice: number;
   setDateRange: Dispatch<SetStateAction<Range>>;
   initialDateRange: {
     startDate: Date;
@@ -32,6 +34,7 @@ const BookingModal: React.FC<BookingModalProps> = ({
   totalPrice,
   dateRange,
   listingId,
+  listingPrice,
   setDateRange,
   initialDateRange,
 }) => {
@@ -111,7 +114,7 @@ const BookingModal: React.FC<BookingModalProps> = ({
           toast.error(error.response.data.message);
         })
         .finally(() => {
-          // setIsLoading(false);
+          bookingModal.onClose()
         });
     }
   }, [
@@ -123,24 +126,25 @@ const BookingModal: React.FC<BookingModalProps> = ({
     setDateRange,
     elements,
     stripe,
+    bookingModal
   ]);
 
   const bodyContent = (
     <div className='flex flex-col gap-4'>
-      <Heading title='Book your Reservation' subtitle='Create an account' />
+      <Heading center title='Book your Reservation'
+       subtitle={`Enter your payment information to book the listing from the dates between ${format(dateRange.startDate!, 'PP')} - ${format(dateRange.endDate!, 'PP')}, inclusive.`}
+        />
+        <hr />
+        {/* <div className='flex flex-col gap-2 text-sm items-center'>
+          <p>$ {listingPrice} * {dateRange.endDate!.getDate() - dateRange.startDate!.getDate()} nights</p>
+          <p>GroundBnb fee:   $ {Math.ceil(totalPrice * 0.05)}</p>
+        </div> */}
+          <p className="text-semibold text-center">Total: <span className="font-medium">${totalPrice}</span> </p>
       <CardElement
-        // className='listing-booking-modal__stripe-card'
+        
         options={{ hidePostalCode: true }}
       />
-      {/* <Button
-        // size="large"
-        // type="primary"
-        label='Book'
-        // className="listing-booking-modal__cta"
-        onClick={() => {}}
-        // loading={loading}
-        disabled={!stripe || !elements}
-      /> */}
+    
     </div>
   );
 

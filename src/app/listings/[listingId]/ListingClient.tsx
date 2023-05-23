@@ -4,7 +4,7 @@ import axios from 'axios';
 import { toast } from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { differenceInCalendarDays, eachDayOfInterval } from 'date-fns';
+import { addDays, differenceInCalendarDays, eachDayOfInterval, isSameDay } from 'date-fns';
 import { Range } from 'react-date-range';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
@@ -22,7 +22,7 @@ import useBookModal from '@/app/hooks/useBookModal';
 
 const initialDateRange = {
   startDate: new Date(),
-  endDate: new Date(),
+  endDate: addDays(new Date(), 2),
   key: 'selection',
 };
 
@@ -61,10 +61,20 @@ const ListingClient: React.FC<ListingClientProps> = ({
 
     return dates;
   }, [reservations]);
+ 
 
   const [isLoading, setIsLoading] = useState(false);
   const [totalPrice, setTotalPrice] = useState(listing.price);
   const [dateRange, setDateRange] = useState<Range>(initialDateRange);
+
+  const findNextAvailableDate = (date:Date, disabledDates:Date[]) => {
+    let nextDate = new Date(date);
+    while (disabledDates.some(disabledDate => isSameDay(disabledDate, nextDate))) {
+      nextDate = addDays(nextDate, 1);
+    }
+    return nextDate;
+  };
+  
 
   useEffect(() => {
     if (dateRange.startDate && dateRange.endDate) {
@@ -80,6 +90,28 @@ const ListingClient: React.FC<ListingClientProps> = ({
       }
     }
   }, [dateRange, listing.price]);
+
+ useEffect(() => {
+  const isStartDateDisabled = disabledDates.some(disabledDate =>
+    isSameDay(disabledDate, initialDateRange.startDate)
+  );
+  const isEndDateDisabled = disabledDates.some(disabledDate =>
+    isSameDay(disabledDate, initialDateRange.endDate)
+  );
+
+  if (isStartDateDisabled || isEndDateDisabled) {
+    const nextStartDate = findNextAvailableDate(initialDateRange.startDate, disabledDates);
+    const nextEndDate = findNextAvailableDate(addDays(nextStartDate, 2), disabledDates);
+
+    setDateRange({
+      ...initialDateRange,
+      startDate: nextStartDate,
+      endDate: nextEndDate,
+    });
+  }
+}, [disabledDates]);
+
+ 
   const category = useMemo(() => {
     return categories.find((item) => item.label === listing.category);
   }, [listing.category]);
@@ -114,9 +146,10 @@ const ListingClient: React.FC<ListingClientProps> = ({
                   dateRange={dateRange}
                   setDateRange={setDateRange}
                   initialDateRange={initialDateRange}
-                  disabled={isLoading}
+                  // disabled={isLoading}
                   disabledDates={disabledDates}
                   listingId={listing.id}
+                  listingPrice={listing.price}
                   currentUser={currentUser}
                 />
               </Elements>
