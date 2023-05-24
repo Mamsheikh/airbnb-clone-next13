@@ -104,13 +104,13 @@ const RentModal: React.FC = () => {
       media = await imagesUpload(images);
     }
 
-    axios
+   const res =  axios
       .post('/api/listings', {
         ...data,
         images: media,
       })
       .then(() => {
-        toast.success('Listing created!');
+        // toast.success('Listing created!');
         router.refresh();
         reset();
         setStep(STEPS.CATEGORY);
@@ -121,7 +121,15 @@ const RentModal: React.FC = () => {
       })
       .finally(() => {
         setLoading(false);
+        setImages([])
       });
+
+      toast.promise(res, {
+        loading:'Creating listing',
+        success:'Listing created',
+        error:'Something went wrong'
+
+      })
   };
 
   const actionLabel = useMemo(() => {
