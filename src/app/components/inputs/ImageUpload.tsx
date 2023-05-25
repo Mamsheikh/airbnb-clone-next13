@@ -39,24 +39,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ images, setImages }) => {
     }
   }, []);
 
-  // const handleImagesChange = (e:React.ChangeEvent<HTMLInputElement>) => {
-  //   const files = [e.target.files];
-  //   let err = '';
-  //   let newImages:FileList[] = [];
 
-  //   files.forEach((file) => {
-  //     // if (!file) return (err = 'File does not exist');
-
-  //     if (file![0]['type'] !== 'image/jpeg' && file.type !== 'image/png') {
-  //     //   return (err = 'Image format not supported');
-  //     // }
-
-  //     return newImages.push(file);
-  //   });
-
-  //   if (err) toast.error(err);
-  //   setImages([...images, ...newImages]);
-  // };
   const deleteImage = (index: number) => {
     const newArr = [...images];
     newArr.splice(index, 1);
