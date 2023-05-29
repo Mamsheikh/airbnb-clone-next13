@@ -93,7 +93,7 @@ const BookingModal: React.FC<BookingModalProps> = ({
         cardElement,
       );
 
-      axios
+     const res =  axios
         .post(`/api/reservations`, {
           totalPrice,
           startDate: dateRange.startDate,
@@ -102,7 +102,7 @@ const BookingModal: React.FC<BookingModalProps> = ({
           listingId,
         })
         .then(() => {
-          toast.success('Listing Reserved🎉');
+          // toast.success('Listing Reserved🎉');
           setDateRange(initialDateRange);
 
           router.push('/trips');
@@ -116,6 +116,12 @@ const BookingModal: React.FC<BookingModalProps> = ({
         .finally(() => {
           bookingModal.onClose()
         });
+
+        toast.promise(res, {
+          loading:'Creating booking...',
+          success: "Listing Reserved🎉",
+          error:"Something went wrong"
+        })
     }
   }, [
     totalPrice,
