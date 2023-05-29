@@ -44,7 +44,7 @@ const RegisterModal: React.FC<RegisterModalProps> = () => {
         loginModal.onOpen();
       })
       .catch((error) => {
-        toast.error('Something went wrong:(');
+        toast.error(error.response.data.message);
       })
       .finally(() => {
         setLoading(false);
