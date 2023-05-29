@@ -12,7 +12,7 @@ const FavoritesPage = async () => {
     return <EmptyState title='Unauthorized' subtitle='Please login' />;
   }
 
-  if (listings.length === 1) {
+  if (listings.length === 0) {
     return (
       <EmptyState
         title='No favorites found'
