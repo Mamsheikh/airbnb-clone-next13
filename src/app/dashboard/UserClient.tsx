@@ -74,9 +74,7 @@ const UserClient: React.FC<UserClientProps> = ({ currentUser }) => {
         <Button label='Connect with Stripe' onClick={onClick} />
 
         <div className='text-xs text-neutral-500 '>
-          When redirected to the Stripe account activation form, click the{' '}
-          <span className='font-semibold'>Skip this account form</span> link
-          presented at the top to connect with Stripe in development mode.
+          When redirected to the Stripe account activation form, fill out test information and use a test card or bank account and use a test document.
         </div>
       </div>
     </>
