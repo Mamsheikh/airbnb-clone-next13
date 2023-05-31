@@ -150,10 +150,15 @@ const BookingModal: React.FC<BookingModalProps> = ({
         
         options={{ hidePostalCode: true }}
       />
-    
     </div>
   );
+  
+  const footerContent = (
+    <div>
+      <p className="text-xs text-center mt-10">Test using the credit card number: 4242 4242 4242 4242, a future expiry date, and any 3 digits for the CVC code.</p>
 
+    </div>
+  )
   return (
     <Modal
       disabled={!stripe || !elements}
@@ -163,7 +168,7 @@ const BookingModal: React.FC<BookingModalProps> = ({
       onClose={bookingModal.onClose}
       onSubmit={onCreateReservation}
       body={bodyContent}
-      // footer={footerContent}
+      footer={footerContent}
     />
   );
 };
