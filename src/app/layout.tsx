@@ -7,6 +7,7 @@ import LoginModal from './components/modals/LoginModal';
 import getCurrentUser from './actions/getCurrentUser';
 import RentModal from './components/modals/RentModal';
 import SearchModal from './components/modals/SearchModal';
+import GoogleAnalytics from './components/GoogleAnalytics';
 
 export const metadata = {
   title: 'Airbnb clone',
@@ -25,6 +26,7 @@ export default async function RootLayout({
   const currentUser = await getCurrentUser();
   return (
     <html lang='en'>
+      <GoogleAnalytics GA_TRACKING_ID={process.env.GA_TRACKING_ID!} />
       <body className={font.className}>
         <Navbar currentUser={currentUser} />
         <ToastProvider />
